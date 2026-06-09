@@ -6,54 +6,64 @@ import QRCodeStyling from "qr-code-styling";
 interface QrPreviewProps {
   url: string;
   logo: string;
+  color: string;
 }
 
 export default function QrPreview({
   url,
   logo,
+  color,
 }: QrPreviewProps) {
   const qrRef = useRef<HTMLDivElement>(null);
-  const qrCode = useRef<QRCodeStyling | null>(null);
 
   useEffect(() => {
-    if (!qrCode.current) {
-      qrCode.current = new QRCodeStyling({
-        width: 280,
-        height: 280,
-        data: url,
+    if (!qrRef.current) return;
 
-        image: logo,
+    // Hapus QR lama
+    qrRef.current.innerHTML = "";
 
-        dotsOptions: {
-          color: "#FF5C5C",
-          type: "rounded",
-        },
+    // Buat QR baru
+    const qrCode = new QRCodeStyling({
+      width: 280,
+      height: 280,
+      data: url,
+      image: logo,
 
-        backgroundOptions: {
-          color: "#ffffff",
-        },
+      dotsOptions: {
+        color: color,
+        type: "rounded",
+      },
 
-        imageOptions: {
-          crossOrigin: "anonymous",
-          margin: 8,
-        },
-      });
+      backgroundOptions: {
+        color: "#ffffff",
+      },
 
-      if (qrRef.current) {
-        qrCode.current.append(qrRef.current);
-      }
-    } else {
-      qrCode.current.update({
-        data: url,
-        image: logo,
-      });
-    }
-  }, [url, logo]);
+      cornersSquareOptions: {
+        color: color,
+        type: "extra-rounded",
+      },
+
+      cornersDotOptions: {
+        color: color,
+        type: "dot",
+      },
+
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 8,
+      },
+    });
+
+    qrCode.append(qrRef.current);
+  }, [url, logo, color]);
 
   return (
+     <div className="flex flex-col items-center justify-center gap-4">
     <div
       ref={qrRef}
       className="flex items-center justify-center"
     />
+
+  </div>
   );
 }

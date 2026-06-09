@@ -6,6 +6,7 @@ import QrPreview from "@/components/qr-preview";
 export default function CreatePage() {
   const [url, setUrl] = useState("https://stelarislab.com");
   const [logo, setLogo] = useState("/stelaris-logo.png");
+  const [color, setColor] = useState("#FF5C5C");
 
   return (
     <main className="min-h-screen bg-white">
@@ -65,9 +66,11 @@ export default function CreatePage() {
 
                 <input
                   type="color"
-                  defaultValue="#ff5c5c"
+                  value={color}
+                  onChange={(e) => setColor(e.target.value)}
                   className="w-full h-12 border border-gray-200 rounded-xl"
                 />
+
               </div>
 
               <div>
@@ -114,6 +117,7 @@ export default function CreatePage() {
               <QrPreview
   url={url}
   logo={logo}
+  color={color}
 />
             </div>
           </div>
