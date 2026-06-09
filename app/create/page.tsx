@@ -9,6 +9,8 @@ const [qrType, setQrType] = useState("website");
   const [url, setUrl] = useState("https://stelarislab.com");
   const [logo, setLogo] = useState("/stelaris-logo.png");
   const [color, setColor] = useState("#FF5C5C");
+  const [wifiPassword, setWifiPassword] = useState("");
+const [wifiSecurity, setWifiSecurity] = useState("WPA");
 
   let qrData = url;
 
@@ -22,6 +24,10 @@ if (qrType === "email") {
 
 if (qrType === "phone") {
   qrData = `tel:${url}`;
+}
+
+if (qrType === "wifi") {
+  qrData = `WIFI:T:${wifiSecurity};S:${url};P:${wifiPassword};;`;
 }
 
   return (
@@ -53,7 +59,7 @@ if (qrType === "phone") {
                 <select
   value={qrType}
   onChange={(e) => setQrType(e.target.value)}
-  className="w-full border border-gray-200 rounded-xl px-4 py-3"
+  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900"
 >
                   <option value="website">Website</option>
 <option value="whatsapp">WhatsApp</option>
@@ -92,8 +98,41 @@ if (qrType === "phone") {
     ? "Nama WiFi"
     : "Write your text"
 }
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3"
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900"
                 />
+                {qrType === "wifi" && (
+  <>
+    <div className="mt-4">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        Password
+      </label>
+
+      <input
+        type="text"
+        value={wifiPassword}
+        onChange={(e) => setWifiPassword(e.target.value)}
+        placeholder="WiFi Password"
+        className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900"
+      />
+    </div>
+
+    <div className="mt-4">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        Security
+      </label>
+
+      <select
+        value={wifiSecurity}
+        onChange={(e) => setWifiSecurity(e.target.value)}
+        className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900"
+      >
+        <option value="WPA">WPA/WPA2</option>
+        <option value="WEP">WEP</option>
+        <option value="nopass">No Password</option>
+      </select>
+    </div>
+  </>
+)}
               </div>
 
               <div>
@@ -118,7 +157,7 @@ if (qrType === "phone") {
                 <input
   type="file"
   accept="image/*"
-  className="w-full border border-gray-200 rounded-xl px-4 py-3"
+  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900"
   onChange={(e) => {
     const file = e.target.files?.[0];
 
