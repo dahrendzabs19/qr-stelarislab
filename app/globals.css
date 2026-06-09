@@ -24,3 +24,16 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+:root {
+  --stelaris-primary: #ff5c5c;
+  --stelaris-primary-hover: #ff4d4d;
+}
+
+.font-heading {
+  font-family: var(--font-sora);
+}
+
+.font-body {
+  font-family: var(--font-montserrat);
+}

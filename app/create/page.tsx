@@ -5,6 +5,7 @@ import QrPreview from "@/components/qr-preview";
 
 export default function CreatePage() {
   const [url, setUrl] = useState("https://stelarislab.com");
+  const [logo, setLogo] = useState("/stelaris-logo.png");
 
   return (
     <main className="min-h-screen bg-white">
@@ -75,9 +76,19 @@ export default function CreatePage() {
                 </label>
 
                 <input
-                  type="file"
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3"
-                />
+  type="file"
+  accept="image/*"
+  className="w-full border border-gray-200 rounded-xl px-4 py-3"
+  onChange={(e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    const imageUrl = URL.createObjectURL(file);
+
+    setLogo(imageUrl);
+  }}
+/>
               </div>
 
               <button
@@ -100,7 +111,10 @@ export default function CreatePage() {
           {/* Preview Panel */}
           <div className="border border-gray-200 rounded-3xl p-6 flex items-center justify-center min-h-[600px]">
             <div className="w-[350px] h-[350px] bg-white border rounded-3xl shadow-lg flex items-center justify-center">
-              <QrPreview url={url} />
+              <QrPreview
+  url={url}
+  logo={logo}
+/>
             </div>
           </div>
         </div>
