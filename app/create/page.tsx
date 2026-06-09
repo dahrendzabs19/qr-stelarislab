@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import QrPreview from "@/components/qr-preview";
 
 export default function CreatePage() {
@@ -34,14 +35,37 @@ if (qrType === "wifi") {
     <main className="min-h-screen bg-white">
       <section className="max-w-7xl mx-auto px-6 py-12">
         <div className="mb-10">
-          <h1 className="font-heading text-4xl font-bold text-gray-900">
-            Create QR Code
-          </h1>
 
-          <p className="font-body text-gray-600 mt-2">
-            Customize your QR code and add your brand logo.
-          </p>
-        </div>
+  <Link
+    href="/"
+    className="
+      inline-flex
+      items-center
+      gap-2
+      px-4
+      py-2
+      rounded-full
+      bg-[#FFF1F1]
+      text-[#FF5C5C]
+      text-sm
+      font-medium
+      hover:bg-[#FFE4E4]
+      transition-all
+      mb-4
+    "
+  >
+    ← Back Home
+  </Link>
+
+  <h1 className="font-heading text-4xl font-bold text-gray-900">
+    Create QR Code
+  </h1>
+
+  <p className="font-body text-gray-600 mt-2">
+    Customize your QR code and add your brand logo.
+  </p>
+
+</div>
 
         <div className="grid lg:grid-cols-[420px_1fr] gap-8">
           {/* Settings Panel */}
