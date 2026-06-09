@@ -4,9 +4,25 @@ import { useState } from "react";
 import QrPreview from "@/components/qr-preview";
 
 export default function CreatePage() {
+const [qrType, setQrType] = useState("website");
+
   const [url, setUrl] = useState("https://stelarislab.com");
   const [logo, setLogo] = useState("/stelaris-logo.png");
   const [color, setColor] = useState("#FF5C5C");
+
+  let qrData = url;
+
+if (qrType === "whatsapp") {
+  qrData = `https://wa.me/${url}`;
+}
+
+if (qrType === "email") {
+  qrData = `mailto:${url}`;
+}
+
+if (qrType === "phone") {
+  qrData = `tel:${url}`;
+}
 
   return (
     <main className="min-h-screen bg-white">
@@ -34,19 +50,28 @@ export default function CreatePage() {
                   QR Type
                 </label>
 
-                <select className="w-full border border-gray-200 rounded-xl px-4 py-3">
-                  <option>Website</option>
-                  <option>WhatsApp</option>
-                  <option>Email</option>
-                  <option>Phone</option>
-                  <option>WiFi</option>
-                  <option>Text</option>
+                <select
+  value={qrType}
+  onChange={(e) => setQrType(e.target.value)}
+  className="w-full border border-gray-200 rounded-xl px-4 py-3"
+>
+                  <option value="website">Website</option>
+<option value="whatsapp">WhatsApp</option>
+<option value="email">Email</option>
+<option value="phone">Phone</option>
+<option value="wifi">WiFi</option>
+<option value="text">Text</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Destination URL
+                  {qrType === "website" && "Destination URL"}
+{qrType === "whatsapp" && "WhatsApp Number"}
+{qrType === "email" && "Email Address"}
+{qrType === "phone" && "Phone Number"}
+{qrType === "wifi" && "WiFi Network"}
+{qrType === "text" && "Text Content"}
                 </label>
 
                 <input
@@ -54,7 +79,19 @@ export default function CreatePage() {
                   value={url}
                   spellCheck={false}
                   onChange={(e) => setUrl(e.target.value)}
-                  placeholder="https://stelarislab.com"
+                  placeholder={
+  qrType === "website"
+    ? "https://stelarislab.com"
+    : qrType === "whatsapp"
+    ? "628123456789"
+    : qrType === "email"
+    ? "hello@stelarislab.com"
+    : qrType === "phone"
+    ? "+628123456789"
+    : qrType === "wifi"
+    ? "Nama WiFi"
+    : "Write your text"
+}
                   className="w-full border border-gray-200 rounded-xl px-4 py-3"
                 />
               </div>
@@ -95,6 +132,9 @@ export default function CreatePage() {
               </div>
 
               <button
+              onClick={() => {
+    (window as any).downloadQR?.();
+  }}
                 className="
                   w-full
                   bg-[#FF5C5C]
@@ -115,7 +155,7 @@ export default function CreatePage() {
           <div className="border border-gray-200 rounded-3xl p-6 flex items-center justify-center min-h-[600px]">
             <div className="w-[350px] h-[350px] bg-white border rounded-3xl shadow-lg flex items-center justify-center">
               <QrPreview
-  url={url}
+  url={qrData}
   logo={logo}
   color={color}
 />

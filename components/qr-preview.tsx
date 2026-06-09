@@ -15,6 +15,7 @@ export default function QrPreview({
   color,
 }: QrPreviewProps) {
   const qrRef = useRef<HTMLDivElement>(null);
+  const qrCodeRef = useRef<QRCodeStyling | null>(null);
 
   useEffect(() => {
     if (!qrRef.current) return;
@@ -23,7 +24,7 @@ export default function QrPreview({
     qrRef.current.innerHTML = "";
 
     // Buat QR baru
-    const qrCode = new QRCodeStyling({
+    qrCodeRef.current = new QRCodeStyling({
       width: 280,
       height: 280,
       data: url,
@@ -54,8 +55,15 @@ export default function QrPreview({
       },
     });
 
-    qrCode.append(qrRef.current);
+    qrCodeRef.current.append(qrRef.current);
+    (window as any).downloadQR = () => {
+  qrCodeRef.current?.download({
+    name: "stelaris-qr",
+    extension: "png",
+  });
+};
   }, [url, logo, color]);
+
 
   return (
      <div className="flex flex-col items-center justify-center gap-4">
