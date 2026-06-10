@@ -10,6 +10,9 @@ const [qrType, setQrType] = useState("website");
   const [url, setUrl] = useState("https://stelarislab.com");
   const [logo, setLogo] = useState("/stelaris-logo.png");
   const [color, setColor] = useState("#FF5C5C");
+  const [template, setTemplate] = useState("rounded");
+  const [backgroundColor, setBackgroundColor] =
+  useState("#FFFFFF");
 
   const [useLogo, setUseLogo] = useState(true);
   const [logoSize, setLogoSize] = useState(45);
@@ -96,6 +99,32 @@ if (qrType === "wifi") {
 <option value="wifi">WiFi</option>
 <option value="text">Text</option>
                 </select>
+
+                <div>
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    QR Style
+  </label>
+
+  <select
+    value={template}
+    onChange={(e) => setTemplate(e.target.value)}
+    className="
+      w-full
+      border
+      border-gray-200
+      rounded-xl
+      px-4
+      py-3
+      text-gray-900
+    "
+  >
+    <option value="square">Classic</option>
+    <option value="rounded">Rounded</option>
+    <option value="dots">Dots</option>
+    <option value="extra">Premium</option>
+  </select>
+</div>
+
               </div>
 
               <div>
@@ -167,6 +196,28 @@ if (qrType === "wifi") {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Brand Color
                 </label>
+
+                <div>
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Background Color
+  </label>
+
+  <input
+    type="color"
+    value={backgroundColor}
+    onChange={(e) =>
+      setBackgroundColor(e.target.value)
+    }
+    className="
+      w-full
+      h-12
+      border
+      border-gray-200
+      rounded-xl
+      cursor-pointer
+    "
+  />
+</div>
 
                 <input
                   type="color"
@@ -249,34 +300,82 @@ if (qrType === "wifi") {
   />
 </div>
 
-              <button
-              onClick={() => {
-    (window as any).downloadQR?.();
-  }}
-                className="
-                  w-full
-                  bg-[#FF5C5C]
-                  hover:bg-[#ff4d4d]
-                  text-white
-                  font-semibold
-                  py-3
-                  rounded-xl
-                  transition-all
-                "
-              >
-                Download QR
-              </button>
+             <div className="grid grid-cols-2 gap-3">
+  <button
+    onClick={() => (window as any).downloadQR?.("png")}
+    className="
+      bg-[#FF5C5C]
+      hover:bg-[#ff4d4d]
+      active:scale-[0.98]
+      text-white
+      py-3
+      rounded-xl
+      font-semibold
+      shadow-sm
+      hover:shadow-md
+      transition-all
+      duration-200
+      cursor-pointer
+    "
+  >
+    Download PNG
+  </button>
+
+  <button
+    onClick={() => (window as any).downloadQR?.("svg")}
+    className="
+      border
+      border-[#FF5C5C]
+      text-[#FF5C5C]
+      bg-white
+      hover:bg-[#FFF1F1]
+      hover:border-[#ff4d4d]
+      hover:text-[#ff4d4d]
+      active:scale-[0.98]
+      py-3
+      rounded-xl
+      font-semibold
+      shadow-sm
+      hover:shadow-md
+      transition-all
+      duration-200
+      cursor-pointer
+    "
+  >
+    Download SVG
+  </button>
+</div>
             </div>
           </div>
 
           {/* Preview Panel */}
           <div className="border border-gray-200 rounded-3xl p-6 flex items-center justify-center min-h-[600px]">
-            <div className="relative w-[350px] h-[350px] bg-white border rounded-3xl shadow-lg flex items-center justify-center">
+            <div
+  className="
+    relative
+    w-[350px]
+    h-[350px]
+    border
+    rounded-3xl
+    shadow-lg
+    flex
+    items-center
+    justify-center
+  "
+  style={{
+    background:
+      backgroundColor === "#ffffff"
+        ? "#ffffff"
+        : backgroundColor,
+  }}
+>
  <QrPreview
   url={qrData}
   logo={useLogo ? logo : ""}
   color={color}
+  backgroundColor={backgroundColor}
   logoSize={logoSize}
+  template={template}
 />
 
             </div>

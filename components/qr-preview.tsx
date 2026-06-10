@@ -7,19 +7,32 @@ interface QrPreviewProps {
   url: string;
   logo: string;
   color: string;
+  backgroundColor: string;
   logoSize: number;
+   template: string;
 }
 
 export default function QrPreview({
   url,
   logo,
   color,
+  backgroundColor,
   logoSize,
+  template,
 }: QrPreviewProps) {
   const qrRef = useRef<HTMLDivElement>(null);
   const qrCodeRef = useRef<QRCodeStyling | null>(null);
 
   useEffect(() => {
+    const qrType =
+  template === "square"
+    ? "square"
+    : template === "dots"
+    ? "dots"
+    : template === "extra"
+    ? "extra-rounded"
+    : "rounded";
+    
     if (!qrRef.current) return;
 
     if (!qrCodeRef.current) {
@@ -32,14 +45,17 @@ export default function QrPreview({
         image: logo || undefined,
 
         dotsOptions: {
-          color,
-          type: "rounded",
-        },
+  color,
+  type: qrType as any,
+},
 
         cornersSquareOptions: {
-          color,
-          type: "extra-rounded",
-        },
+  color,
+  type:
+    template === "square"
+      ? "square"
+      : "extra-rounded",
+},
 
         cornersDotOptions: {
           color,
@@ -47,53 +63,71 @@ export default function QrPreview({
         },
 
         backgroundOptions: {
-          color: "#ffffff",
+          color: backgroundColor,
         },
 
         imageOptions: {
-  crossOrigin: "anonymous",
-  margin: 12,
-  hideBackgroundDots: true,
-  imageSize: logoSize / 100,
-},
+          crossOrigin: "anonymous",
+          margin: 12,
+          hideBackgroundDots: true,
+          imageSize: logoSize / 100,
+        },
       });
 
       qrCodeRef.current.append(qrRef.current);
     } else {
       qrCodeRef.current.update({
         data: url,
+
         image: logo || undefined,
 
         dotsOptions: {
-          color,
-          type: "rounded",
-        },
+  color,
+  type: qrType as any,
+},
 
         cornersSquareOptions: {
-          color,
-          type: "extra-rounded",
-        },
+  color,
+  type:
+    template === "square"
+      ? "square"
+      : "extra-rounded",
+},
 
         cornersDotOptions: {
           color,
           type: "dot",
         },
 
+        backgroundOptions: {
+          color: backgroundColor,
+        },
+
         imageOptions: {
           crossOrigin: "anonymous",
-          margin: 8,
+          margin: 12,
+          hideBackgroundDots: true,
           imageSize: logoSize / 100,
         },
       });
     }
 
-    (window as any).downloadQR = () => {
+    (window as any).downloadQR = (
+      extension: "png" | "svg" = "png"
+    ) => {
       qrCodeRef.current?.download({
         name: "stelaris-qr",
-        extension: "png",
+        extension,
       });
     };
-  }, [url, logo, color, logoSize]);
+  }, [
+  url,
+  logo,
+  color,
+  backgroundColor,
+  logoSize,
+  template,
+]);
 
   return (
     <div
