@@ -10,6 +10,10 @@ const [qrType, setQrType] = useState("website");
   const [url, setUrl] = useState("https://stelarislab.com");
   const [logo, setLogo] = useState("/stelaris-logo.png");
   const [color, setColor] = useState("#FF5C5C");
+
+  const [useLogo, setUseLogo] = useState(true);
+  const [logoSize, setLogoSize] = useState(45);
+
   const [wifiPassword, setWifiPassword] = useState("");
 const [wifiSecurity, setWifiSecurity] = useState("WPA");
 
@@ -174,25 +178,76 @@ if (qrType === "wifi") {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Upload Logo
-                </label>
+  <div className="flex items-center justify-between mb-3">
+    <label className="block text-sm font-medium text-gray-900">
+      Upload Logo
+    </label>
 
-                <input
-  type="file"
-  accept="image/*"
-  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900"
-  onChange={(e) => {
-    const file = e.target.files?.[0];
+    <button
+      type="button"
+      onClick={() => setUseLogo(!useLogo)}
+      className={`
+        relative
+        w-12
+        h-7
+        rounded-full
+        transition-all
+        ${useLogo ? "bg-[#FF5C5C]" : "bg-gray-300"}
+      `}
+    >
+      <span
+        className={`
+          absolute
+          top-1
+          w-5
+          h-5
+          bg-white
+          rounded-full
+          transition-all
+          ${useLogo ? "left-6" : "left-1"}
+        `}
+      />
+    </button>
+  </div>
 
-    if (!file) return;
+{useLogo && (
+  <div className="mt-4">
+    <div className="flex justify-between mb-2">
+      <span className="text-sm font-medium text-gray-900">
+        Logo Size
+      </span>
 
-    const imageUrl = URL.createObjectURL(file);
+      <span className="text-sm text-gray-500">
+        {logoSize}%
+      </span>
+    </div>
 
-    setLogo(imageUrl);
-  }}
+    <input
+  type="range"
+  min="20"
+  max="60"
+  value={logoSize}
+  onChange={(e) => setLogoSize(Number(e.target.value))}
+  className="w-full accent-[#FF5C5C]"
 />
-              </div>
+  </div>
+)}
+
+  <input
+    type="file"
+    accept="image/*"
+    className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900"
+    onChange={(e) => {
+      const file = e.target.files?.[0];
+
+      if (!file) return;
+
+      const imageUrl = URL.createObjectURL(file);
+
+      setLogo(imageUrl);
+    }}
+  />
+</div>
 
               <button
               onClick={() => {
@@ -216,12 +271,14 @@ if (qrType === "wifi") {
 
           {/* Preview Panel */}
           <div className="border border-gray-200 rounded-3xl p-6 flex items-center justify-center min-h-[600px]">
-            <div className="w-[350px] h-[350px] bg-white border rounded-3xl shadow-lg flex items-center justify-center">
-              <QrPreview
+            <div className="relative w-[350px] h-[350px] bg-white border rounded-3xl shadow-lg flex items-center justify-center">
+ <QrPreview
   url={qrData}
-  logo={logo}
+  logo={useLogo ? logo : ""}
   color={color}
+  logoSize={logoSize}
 />
+
             </div>
           </div>
         </div>

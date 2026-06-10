@@ -7,12 +7,14 @@ interface QrPreviewProps {
   url: string;
   logo: string;
   color: string;
+  logoSize: number;
 }
 
 export default function QrPreview({
   url,
   logo,
   color,
+  logoSize,
 }: QrPreviewProps) {
   const qrRef = useRef<HTMLDivElement>(null);
   const qrCodeRef = useRef<QRCodeStyling | null>(null);
@@ -20,58 +22,83 @@ export default function QrPreview({
   useEffect(() => {
     if (!qrRef.current) return;
 
-    // Hapus QR lama
-    qrRef.current.innerHTML = "";
+    if (!qrCodeRef.current) {
+      qrCodeRef.current = new QRCodeStyling({
+        width: 280,
+        height: 280,
 
-    // Buat QR baru
-    qrCodeRef.current = new QRCodeStyling({
-      width: 280,
-      height: 280,
-      data: url,
-      image: logo,
+        data: url,
 
-      dotsOptions: {
-        color: color,
-        type: "rounded",
-      },
+        image: logo || undefined,
 
-      backgroundOptions: {
-        color: "#ffffff",
-      },
+        dotsOptions: {
+          color,
+          type: "rounded",
+        },
 
-      cornersSquareOptions: {
-        color: color,
-        type: "extra-rounded",
-      },
+        cornersSquareOptions: {
+          color,
+          type: "extra-rounded",
+        },
 
-      cornersDotOptions: {
-        color: color,
-        type: "dot",
-      },
+        cornersDotOptions: {
+          color,
+          type: "dot",
+        },
 
-      imageOptions: {
-        crossOrigin: "anonymous",
-        margin: 8,
-      },
-    });
+        backgroundOptions: {
+          color: "#ffffff",
+        },
 
-    qrCodeRef.current.append(qrRef.current);
+        imageOptions: {
+  crossOrigin: "anonymous",
+  margin: 12,
+  hideBackgroundDots: true,
+  imageSize: logoSize / 100,
+},
+      });
+
+      qrCodeRef.current.append(qrRef.current);
+    } else {
+      qrCodeRef.current.update({
+        data: url,
+        image: logo || undefined,
+
+        dotsOptions: {
+          color,
+          type: "rounded",
+        },
+
+        cornersSquareOptions: {
+          color,
+          type: "extra-rounded",
+        },
+
+        cornersDotOptions: {
+          color,
+          type: "dot",
+        },
+
+        imageOptions: {
+          crossOrigin: "anonymous",
+          margin: 8,
+          imageSize: logoSize / 100,
+        },
+      });
+    }
+
     (window as any).downloadQR = () => {
-  qrCodeRef.current?.download({
-    name: "stelaris-qr",
-    extension: "png",
-  });
-};
-  }, [url, logo, color]);
-
+      qrCodeRef.current?.download({
+        name: "stelaris-qr",
+        extension: "png",
+      });
+    };
+  }, [url, logo, color, logoSize]);
 
   return (
-     <div className="flex flex-col items-center justify-center gap-4">
     <div
       ref={qrRef}
       className="flex items-center justify-center"
     />
-
-  </div>
   );
 }
