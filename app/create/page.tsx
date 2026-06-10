@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import QrPreview from "@/components/qr-preview";
+import { toast } from "sonner";
 
 export default function CreatePage() {
 const [qrType, setQrType] = useState("website");
@@ -193,11 +194,57 @@ if (qrType === "wifi") {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Brand Color
-                </label>
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Brand Color
+  </label>
 
-                <div>
+  <input
+    type="color"
+    value={color}
+    onChange={(e) => setColor(e.target.value)}
+    className="
+      w-full
+      h-12
+      border
+      border-gray-200
+      rounded-xl
+      cursor-pointer
+      mb-4
+    "
+  />
+
+<div className="flex gap-2 mt-3 mb-4">
+  {[
+    "#FF5C5C",
+    "#000000",
+    "#1E3A8A",
+    "#D4AF37",
+    "#7C3AED",
+  ].map((preset) => (
+    <button
+      key={preset}
+      type="button"
+      onClick={() => setColor(preset)}
+      className={`
+        w-8
+        h-8
+        rounded-full
+        border-2
+        transition-all
+        hover:scale-110
+        ${
+          color === preset
+            ? "border-gray-900 scale-110"
+            : "border-white"
+        }
+      `}
+      style={{
+        backgroundColor: preset,
+      }}
+    />
+  ))}
+</div>
+
   <label className="block text-sm font-medium text-gray-700 mb-2">
     Background Color
   </label>
@@ -205,9 +252,7 @@ if (qrType === "wifi") {
   <input
     type="color"
     value={backgroundColor}
-    onChange={(e) =>
-      setBackgroundColor(e.target.value)
-    }
+    onChange={(e) => setBackgroundColor(e.target.value)}
     className="
       w-full
       h-12
@@ -218,15 +263,6 @@ if (qrType === "wifi") {
     "
   />
 </div>
-
-                <input
-                  type="color"
-                  value={color}
-                  onChange={(e) => setColor(e.target.value)}
-                  className="w-full h-12 border border-gray-200 rounded-xl"
-                />
-
-              </div>
 
               <div>
   <div className="flex items-center justify-between mb-3">
@@ -302,7 +338,10 @@ if (qrType === "wifi") {
 
              <div className="grid grid-cols-2 gap-3">
   <button
-    onClick={() => (window as any).downloadQR?.("png")}
+    onClick={() => {
+  (window as any).downloadQR?.("png");
+  toast.success("PNG downloaded successfully");
+}}
     className="
       bg-[#FF5C5C]
       hover:bg-[#ff4d4d]
@@ -322,7 +361,10 @@ if (qrType === "wifi") {
   </button>
 
   <button
-    onClick={() => (window as any).downloadQR?.("svg")}
+    onClick={() => {
+  (window as any).downloadQR?.("svg");
+  toast.success("SVG downloaded successfully");
+}}
     className="
       border
       border-[#FF5C5C]

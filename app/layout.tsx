@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Sora, Montserrat } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
         className={`${sora.variable} ${montserrat.variable}`}
       >
         {children}
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );
