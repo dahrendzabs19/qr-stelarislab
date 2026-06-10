@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+import HeroQr from "@/components/hero-qr";
 
 export default function Home() {
   return (
@@ -6,10 +8,22 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-6 py-24">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
+          {/* Left */}
           <div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-red-100 bg-red-50 text-red-500 text-sm font-medium">
-              Stelaris QR
-            </div>
+
+            <Link
+              href="https://stelarislab.com"
+              target="_blank"
+              className="inline-block transition-all duration-300 hover:scale-105"
+            >
+              <Image
+                src="/stelaris-logo-full.png"
+                alt="Stelaris"
+                width={180}
+                height={50}
+                priority
+              />
+            </Link>
 
             <h1 className="font-heading text-5xl md:text-7xl font-bold text-gray-900 mt-6 leading-tight">
               Create QR Codes
@@ -28,7 +42,7 @@ export default function Home() {
             <div className="mt-10">
               <Link
                 href="/create"
-                className="inline-flex items-center rounded-xl px-8 py-4 text-white font-semibold transition"
+                className="inline-flex items-center rounded-xl px-8 py-4 text-white font-semibold transition hover:opacity-90"
                 style={{
                   backgroundColor: "#FF5C5C",
                 }}
@@ -36,15 +50,13 @@ export default function Home() {
                 Make QR
               </Link>
             </div>
+
           </div>
 
+          {/* Right */}
           <div className="flex justify-center">
-            <div className="w-[320px] h-[320px] bg-white rounded-3xl shadow-xl border border-gray-100 flex items-center justify-center">
-              <div className="w-[240px] h-[240px] border-[12px] border-black rounded-xl flex items-center justify-center">
-                <div className="w-20 h-20 rounded-xl bg-[#FF5C5C]" />
-              </div>
-            </div>
-          </div>
+  <HeroQr />
+</div>
 
         </div>
       </section>
