@@ -1,12 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import QrPreview from "@/components/qr-preview";
 import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
 
 export default function CreatePage() {
+  const searchParams = useSearchParams();
 const [qrType, setQrType] = useState("website");
+useEffect(() => {
+  const type = searchParams.get("type");
+
+  if (type) {
+    setQrType(type);
+  }
+}, [searchParams]);
 
   const [url, setUrl] = useState("https://stelarislab.com");
   const [logo, setLogo] = useState("/stelaris-logo.png");
